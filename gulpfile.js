@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const less = require('gulp-less');
 const rename = require('gulp-rename');
 const del = require('del');
+const babel = require("gulp-babel");
 const replace = require("gulp-replace");
 const plumber = require("gulp-plumber");
 const tap = require("gulp-tap");
@@ -14,6 +15,7 @@ const lessFiles = [`${srcPath}/*.{less, wxss}`];
 const jsonFiles = [`${srcPath}/*.json`];
 const jsFiles = [`${srcPath}/*.js`];
 const imageFiles = [`${srcPath}/images/*.{png,jpg,svg,gif}`,`${srcPath}/images/**/*.{png,jpg,svg,gif}`];
+const configFiles = [`./config/*.js`];
 
 const onError = function(err) {
   notify.onError({
@@ -24,6 +26,19 @@ const onError = function(err) {
   })(err);
 
   this.emit("end");
+};
+
+/* 配置别名 */
+const babelCfg = {
+  plugins: [[
+    require.resolve('babel-plugin-module-resolver'),
+    {
+      "root": ["./src"],
+      "alias": {
+        "@@": "./src/"
+      }
+    }
+  ]]
 };
 
 /* 清除dist目录 */
@@ -52,6 +67,7 @@ gulp.task(json);
 const js = () => {
   return gulp
     .src(jsFiles, { since: gulp.lastRun(js) })
+    .pipe(babel(babelCfg))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(js);
@@ -95,6 +111,7 @@ gulp.task('watch', () => {
   gulp.watch(jsonFiles, json);
   gulp.watch(wxmlFiles, wxml);
   gulp.watch(imageFiles, copyImg);
+  gulp.watch(configFiles);
 });
 
 /* dev */

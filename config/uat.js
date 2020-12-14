@@ -1,6 +1,4 @@
-module.exports = {
-  env: {
-    NODE_ENV: 'uat',
-    BASE_URL: ''
-  }
+export const configEnv = {
+  NODE_ENV: 'uat',
+  BASE_URL: ''
 }
