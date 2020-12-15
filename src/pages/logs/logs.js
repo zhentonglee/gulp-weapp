@@ -1,5 +1,5 @@
-//logs.js
-import { formatTime } from '@@/utils/index.js'
+// logs.js
+import { formatTime } from '@@/utils/index.js';
 
 Page({
   data: {
@@ -8,8 +8,8 @@ Page({
   onLoad: function () {
     this.setData({
       logs: (wx.getStorageSync('logs') || []).map(log => {
-        return formatTime(new Date(log))
+        return formatTime(new Date(log));
       })
-    })
+    });
   }
-})
+});
