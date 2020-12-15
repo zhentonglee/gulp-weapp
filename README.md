@@ -30,6 +30,7 @@ npm run uat
 npm run prod
 ```
 ### 项目结构
+```
 gulp-weapp
 ├── config // 环境配置目录
 │   ├── dev.js // 开发环境
@@ -60,3 +61,4 @@ gulp-weapp
 ├── package.json
 ├── project.config.json // 小程序配置文件
 └── README.md
+```
