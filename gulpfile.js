@@ -3,7 +3,6 @@ const less = require('gulp-less');
 const rename = require('gulp-rename');
 const del = require('del');
 const babel = require("gulp-babel");
-const replace = require("gulp-replace");
 const plumber = require("gulp-plumber");
 const tap = require("gulp-tap");
 const notify = require("gulp-notify");
@@ -43,7 +42,7 @@ const babelCfg = {
 
 /* 清除dist目录 */
 gulp.task('clean', done => {
-  del.sync(['dist/**/*']);
+  del.sync(['dist/**/*','!dist/miniprogram_npm']);
   done();
 });
 
