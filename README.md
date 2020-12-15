@@ -5,7 +5,7 @@
 - 开发如果使用 ESM 模块化语法，需要在开发者工具本地设置开启ES6转ES5，否则报错，因为小程序模块化只支持commonjs
 - 本项目统一采用 ESM 模块化语法
 - 配置别名(@@)只针对 js 文件，其他文件暂不支持，例如：import { formatTime } from '@@/utils/index.js'
-- 图片资源先压缩后使用，压缩网站：https://tinypng.com/
+- 尽量使用字体图标（src/assets/iconfont，关于字体图标的引入请看：https://www.cnblogs.com/fancyblogs/p/12299610.html），非字体图标资源先压缩后使用，压缩网站：https://tinypng.com/
 - 微信开发者工具导入项目时，注意最内层路径就是当前项目根目录，不要定位到dist目录
 - 由于项目使用了npm第三方组件库，npm install 完成之后，点击开发者工具中的菜单栏：工具 --> 构建 npm，完成后，本地设置，勾选“使用 npm 模块”选项，关于 npm 使用官方文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html
 ### 安装依赖

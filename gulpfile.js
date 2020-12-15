@@ -9,11 +9,9 @@ const notify = require("gulp-notify");
 
 const srcPath = './src/**';
 const distPath = './dist/';
-const wxmlFiles = [`${srcPath}/*.wxml`];
-const lessFiles = [`${srcPath}/*.{less,wxss}`];
-const jsonFiles = [`${srcPath}/*.json`];
 const jsFiles = [`${srcPath}/*.js`];
-const imageFiles = [`${srcPath}/images/*.{png,jpg,svg,gif}`,`${srcPath}/images/**/*.{png,jpg,svg,gif}`];
+const lessFiles = [`${srcPath}/*.less`];
+const otherFiles = [`${srcPath}`, `!${srcPath}/*.js`, `!${srcPath}/*.less`];
 const configFiles = [`./config/*.js`];
 
 const onError = function(err) {
@@ -46,22 +44,6 @@ gulp.task('clean', done => {
   done();
 });
 
-/* 编译wxml文件 */
-const wxml = () => {
-  return gulp
-    .src(wxmlFiles, { since: gulp.lastRun(wxml) })
-    .pipe(gulp.dest(distPath));
-};
-gulp.task(wxml);
-
-/* 编译json文件 */
-const json = () => {
-  return gulp
-    .src(jsonFiles, { since: gulp.lastRun(json) })
-    .pipe(gulp.dest(distPath));
-};
-gulp.task(json);
-
 /* 编译JS文件 */
 const js = () => {
   return gulp
@@ -82,13 +64,13 @@ const wxss = () => {
 };
 gulp.task(wxss);
 
-/* 配置拷贝图片 */
-const copyImg = () => {
+/* 拷贝其他文件 */
+const other = () => {
   return gulp
-    .src(imageFiles)
+    .src(otherFiles, { since: gulp.lastRun(other) })
     .pipe(gulp.dest(distPath));
-}
-gulp.task(copyImg);
+};
+gulp.task(other);
 
 /* 配置请求地址相关 */
 const envJs = (env) => {
@@ -105,19 +87,17 @@ gulp.task('prodEnv', envJs('prod'));
 
 /* watch */
 gulp.task('watch', () => {
-  gulp.watch(lessFiles, wxss);
   gulp.watch(jsFiles, js);
-  gulp.watch(jsonFiles, json);
-  gulp.watch(wxmlFiles, wxml);
-  gulp.watch(imageFiles, copyImg);
+  gulp.watch(lessFiles, wxss);
+  gulp.watch(otherFiles, other);
   gulp.watch(configFiles);
 });
 
 /* dev */
-gulp.task('dev', gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'copyImg', 'devEnv'), 'watch'));
+gulp.task('dev', gulp.series('clean', gulp.parallel( 'js', 'wxss', 'other', 'devEnv'), 'watch'));
 
 /* uat */
-gulp.task('uat', gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'copyImg', 'uatEnv')));
+gulp.task('uat', gulp.series('clean', gulp.parallel( 'js', 'wxss', 'other', 'uatEnv')));
 
 /* build */
-gulp.task('build', gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'copyImg', 'prodEnv')));
+gulp.task('build', gulp.series('clean', gulp.parallel( 'js', 'wxss', 'other', 'prodEnv')));
